@@ -10,7 +10,9 @@ from data_loading import Protein_feat66_Dataset
 from model import BiGRU
 
 if torch.cuda.is_available():
-    Variable = Variable.cuda()
+    use_cuda = True
+else:
+    use_cuda = False
 
 relative_path = '../../DL4Bio/ss_pred_tf/data/SetOf7604Proteins/'
 trainList_addr = 'trainList'
@@ -29,9 +31,9 @@ learning_rate = 0.001
 
 train_dataset = Protein_feat66_Dataset(relative_path, trainList_addr)
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=4, drop_last=True)
-
 valid_dataset = Protein_feat66_Dataset(relative_path, validList_addr, max_seq_length=683)
 valid_loader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=True, num_workers=4, drop_last=True)
+print("Data loaded!!!!!!")
 
 def evaluate(rnn, dataloader):
     correct = 0
@@ -60,18 +62,24 @@ def evaluate(rnn, dataloader):
 
 
 rnn = BiGRU(input_size, hidden_size, num_layers, num_classes, batch_size)
-accuracy = evaluate(rnn, valid_loader)
+rnn = rnn.cuda() if use_cuda else rnn
+print("Model loaded!!!!!!!!")
+
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(rnn.parameters(), lr=learning_rate)
 
 for epoch in range(num_epochs):
+    print("Epoch {} is running".format(epoch + 1))
     for i, (name, features, masks, labels, seq_len) in enumerate(train_loader):
         
         features = Variable(features)
         labels = labels.view(-1)
         labels = Variable(labels.type(torch.LongTensor))
         # print("labels size: {}".format(labels.size()))
+        if use_cuda:
+            features = features.cuda()
+            labels = labesl.cuda()
         optimizer.zero_grad()
         outputs = rnn(features)
         # print("outputs size: {}".format(outputs.size()))

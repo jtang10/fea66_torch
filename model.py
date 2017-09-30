@@ -30,6 +30,8 @@ class BiGRU(nn.Module):
         output = self.softmax(output)
         return output
 
+    
+
 if __name__ == '__main__':
     batch_size = 16
     input_size = 66
