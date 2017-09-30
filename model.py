@@ -22,16 +22,8 @@ class BiGRU(nn.Module):
         self.linear2 = nn.Linear(self.hidden_size // 2, self.num_classes)
         self.softmax = nn.Softmax()
 
-    def init_hidden(self):
-        result = Variable(torch.zeros(self.num_layers * (self.bidirectional + 1), self.batch_size, self.hidden_size))
-        if use_cuda:
-            return result.cuda()
-        else:
-            return result
-
     def forward(self, input):
-        hidden = self.init_hidden()
-        output, _ = self.gru(input, hidden)
+        output, _ = self.gru(input)
         output = self.linear1(output)
         output = self.linear2(output)
         output = output.view(-1, self.num_classes)

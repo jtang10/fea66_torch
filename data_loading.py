@@ -35,7 +35,7 @@ class Protein_feat66_Dataset(Dataset):
         with open(filename) as f:
             for line in f:
                 protein_name = line.rstrip('\n')
-                protein_addr = relative_path + 'data/66FEAT/' + protein_name + '.66feat'
+                protein_addr = relative_path + '66FEAT/' + protein_name + '.66feat'
                 proteins_names.append(protein_name)
         return proteins_names
 
@@ -46,8 +46,8 @@ class Protein_feat66_Dataset(Dataset):
         The returned ndarrays will be zero-padded or cutoff and choose specified 
         number of features.
         """
-        protein_addr = self.relative_path + 'data/66FEAT/' + protein_name + '.66feat'
-        ss_addr = self.relative_path + 'data/Angles/' + protein_name + '.ang'
+        protein_addr = self.relative_path + '66FEAT/' + protein_name + '.66feat'
+        ss_addr = self.relative_path + 'Angles/' + protein_name + '.ang'
 
         protein_features = np.zeros((self.max_seq_length, self.feature_size), dtype=np.float32)
         protein_labels = np.zeros(self.max_seq_length, dtype=np.int32)

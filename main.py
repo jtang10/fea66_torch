@@ -12,10 +12,10 @@ from model import BiGRU
 if torch.cuda.is_available():
     Variable = Variable.cuda()
 
-relative_path = '../../DL4Bio/feat66_tensorflow/'
-trainList_addr = 'data/trainList'
-validList_addr = 'data/validList'
-testList_addr = 'data/testList'
+relative_path = '../../DL4Bio/ss_pred_tf/data/SetOf7604Proteins/'
+trainList_addr = 'trainList'
+validList_addr = 'validList'
+testList_addr = 'testList'
 
 batch_size = 16
 input_size = 66
